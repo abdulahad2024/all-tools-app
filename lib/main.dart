@@ -8,6 +8,8 @@ import 'core/theme/app_theme.dart';
 import 'features/main_navigation/screens/splash_screen.dart';
 
 Future<void> main() async {
+
+
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
 

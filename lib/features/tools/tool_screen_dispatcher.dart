@@ -5,7 +5,7 @@ import '../../core/localization/localization_provider.dart';
 import '../../core/providers/history_provider.dart';
 
 // Import all specific tool screen files
-import 'calculator_math/calculator_tools_screen.dart';
+import 'calculator_math/math_tools/math_utils/math_utils.dart';
 import 'pdf_document/pdf_tools_screen.dart';
 import 'image_photo/image_tools_screen.dart';
 import 'qr_barcode/qr_tools_screen.dart';
@@ -32,58 +32,128 @@ class ToolScreenDispatcher {
       // 1. Calculator & Math
       case 'basic_calc':
       case 'scientific_calc':
-      case 'fraction_calc':
-      case 'ratio_calc':
-      case 'average_calc':
-      case 'equation_solver':
-      case 'random_generator':
-      case 'prime_checker':
-      case 'factorial_calc':
-        screen = const BasicCalculatorScreen();
+        screen = tools[0].page(tools[0]);
         break;
 
       case 'age_calc':
+        screen = tools[1].page(tools[1]);
+        break;
+
       case 'date_diff_calc':
-        screen = const AgeCalculatorScreen();
+        screen = tools[2].page(tools[2]);
         break;
 
       case 'percentage_calc':
       case 'discount_calc':
+        screen = tools[3].page(tools[3]);
+        break;
+
       case 'profit_loss_calc':
+        screen = tools[4].page(tools[4]);
+        break;
+
       case 'emi_calc':
-        screen = const EmiCalculatorScreen();
+        screen = tools[5].page(tools[5]);
         break;
 
       case 'bmi_calc':
       case 'bmr_calc':
-        screen = const BmiCalculatorScreen();
+        screen = tools[6].page(tools[6]);
+        break;
+
+      case 'gpa_calc':
+        screen = tools[7].page(tools[7]);
+        break;
+
+      case 'fraction_calc':
+        screen = tools[8].page(tools[8]);
+        break;
+
+      case 'ratio_calc':
+        screen = tools[9].page(tools[9]);
+        break;
+
+      case 'average_calc':
+        screen = tools[10].page(tools[10]);
+        break;
+
+      case 'unit_converter_math':
+        screen = tools[11].page(tools[11]);
+        break;
+
+      case 'number_system_converter':
+        screen = tools[12].page(tools[12]);
+        break;
+
+      case 'equation_solver':
+        screen = tools[13].page(tools[13]);
+        break;
+
+      case 'random_generator':
+        screen = tools[14].page(tools[14]);
+        break;
+
+      case 'prime_checker':
+        screen = tools[15].page(tools[15]);
+        break;
+
+      case 'factorial_calc':
+        screen = tools[16].page(tools[16]);
         break;
 
       // 2. PDF & Document
+      case 'image_to_pdf':
+      case 'photo_to_pdf':
+        screen = const ImageToPdfScreen();
+        break;
+
+      case 'pdf_merger':
+        screen = const PdfMergeSplitScreen(isMergeMode: true);
+        break;
+
+      case 'pdf_splitter':
+      case 'pdf_page_rotator':
+      case 'pdf_page_reorder':
+        screen = const PdfMergeSplitScreen(isMergeMode: false);
+        break;
+
+      case 'pdf_compressor':
+        screen = const PdfCompressWatermarkScreen(mode: 'compress');
+        break;
+
+      case 'pdf_lock_unlock':
+        screen = const PdfCompressWatermarkScreen(mode: 'lock');
+        break;
+
+      case 'watermark_pdf':
+        screen = const PdfCompressWatermarkScreen(mode: 'watermark');
+        break;
+
       case 'signature_maker':
         screen = const SignatureMakerScreen();
         break;
 
       case 'ocr_text':
       case 'pdf_text_extractor':
-      case 'image_to_pdf':
-      case 'pdf_merger':
-      case 'pdf_splitter':
-      case 'pdf_compressor':
-      case 'pdf_page_rotator':
-      case 'pdf_page_reorder':
-      case 'pdf_lock_unlock':
-      case 'pdf_reader':
-      case 'pdf_to_image':
+        screen = const TextExtractorScreen();
+        break;
+
+      case 'id_card_scanner':
       case 'doc_scanner':
       case 'qr_to_pdf':
-      case 'watermark_pdf':
+        screen = const IdCardScannerScreen();
+        break;
+
       case 'pdf_metadata_viewer':
+      case 'pdf_page_counter':
+      case 'pdf_reader':
+      case 'pdf_to_image':
+        screen = const PdfMetadataScreen();
+        break;
+
       case 'word_to_pdf':
       case 'doc_converter':
-      case 'pdf_page_counter':
-      case 'id_card_scanner':
-        screen = const TextExtractorScreen();
+        screen = const WordDocConverterScreen();
         break;
 
       // 3. Image & Photo
@@ -100,19 +170,27 @@ class ToolScreenDispatcher {
       case 'png_to_jpg':
       case 'webp_converter':
       case 'bg_remover':
+        screen = const ImageResizerCompressorScreen();
+        break;
+
+      case 'passport_photo_maker':
+      case 'nid_photo_resizer':
+        screen = const PassportNidPhotoScreen();
+        break;
+
       case 'photo_filters':
       case 'blur_image':
       case 'pixelate_image':
       case 'image_watermark':
-      case 'passport_photo_maker':
-      case 'nid_photo_resizer':
       case 'collage_maker':
       case 'meme_generator':
-      case 'image_to_base64':
-      case 'exif_viewer':
       case 'screenshot_editor':
-      case 'photo_to_pdf':
-        screen = const ImageResizerScreen();
+        screen = const PhotoFiltersEditorScreen();
+        break;
+
+      case 'exif_viewer':
+      case 'image_to_base64':
+        screen = const ExifMetadataBase64Screen();
         break;
 
       // 4. QR & Barcode
@@ -243,7 +321,6 @@ class ToolScreenDispatcher {
 
       // 9. Measurement & Conversion
       case 'unit_converter':
-      case 'unit_converter_math':
       case 'digital_ruler':
         screen = const UnitConverterScreen();
         break;
