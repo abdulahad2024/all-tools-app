@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../core/services/file_save_service.dart';
 import '../image_provider/image_tools_provider.dart';
 import '../image_utils/image_models.dart';
 
@@ -17,12 +18,45 @@ class _PhotoFiltersEditorScreenState extends ConsumerState<PhotoFiltersEditorScr
   XFile? _selectedImage;
   double _blurValue = 0.0;
 
-  Future<void> _pickPhoto() async {
+  Future<void> _pickPhoto(ImageSource source) async {
     final picker = ImagePicker();
-    final XFile? img = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? img = await picker.pickImage(source: source);
     if (img != null) {
       setState(() => _selectedImage = img);
     }
+  }
+
+  void _showImageSourceModal() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library, color: Colors.blue),
+                title: const Text('Pick from Gallery'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _pickPhoto(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: Colors.green),
+                title: const Text('Capture with Camera'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _pickPhoto(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -45,7 +79,7 @@ class _PhotoFiltersEditorScreenState extends ConsumerState<PhotoFiltersEditorScr
               border: Border.all(color: Colors.grey.shade400),
             ),
             child: InkWell(
-              onTap: _pickPhoto,
+              onTap: _showImageSourceModal,
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
@@ -62,7 +96,7 @@ class _PhotoFiltersEditorScreenState extends ConsumerState<PhotoFiltersEditorScr
                             children: [
                               Icon(Icons.add_photo_alternate, size: 64, color: Colors.grey),
                               SizedBox(height: 8),
-                              Text('Tap to select photo from Gallery', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+                              Text('Tap to select photo from Gallery or Camera', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
                             ],
                           ),
                         ),
@@ -125,19 +159,14 @@ class _PhotoFiltersEditorScreenState extends ConsumerState<PhotoFiltersEditorScr
               backgroundColor: Colors.pink,
               foregroundColor: Colors.white,
             ),
-            icon: const Icon(Icons.download),
-            label: const Text('Export Filtered Image', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            onPressed: () {
+            icon: const Icon(Icons.save_alt),
+            label: const Text('Export & Save Filtered Image', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            onPressed: () async {
               if (_selectedImage == null) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a photo first!')));
                 return;
               }
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Photo exported with $activeFilter filter successfully!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              await FileSaveService.saveImageToDevice(context, _selectedImage!, 'Filtered_Photo');
             },
           ),
         ],

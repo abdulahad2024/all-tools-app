@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/tool_categories.dart';
 import '../../../core/localization/localization_provider.dart';
 import '../../../core/providers/history_provider.dart';
+import '../../common/widgets/responsive_container.dart';
 import '../../common/widgets/tool_card.dart';
 
 class HistoryScreen extends ConsumerWidget {
@@ -30,38 +31,41 @@ class HistoryScreen extends ConsumerWidget {
             ),
         ],
       ),
-      body: historyIds.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.history, size: 80, color: Colors.grey),
-                  const SizedBox(height: 16),
-                  Text(
-                    langNotifier.translate('no_history'),
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Text(
-                      langNotifier.translate('no_history_sub'),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.grey),
+      body: ResponsiveContainer(
+        maxWidth: 900,
+        child: historyIds.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.history, size: 80, color: Colors.grey),
+                    const SizedBox(height: 16),
+                    Text(
+                      langNotifier.translate('no_history'),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                      child: Text(
+                        langNotifier.translate('no_history_sub'),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: historyIds.length,
+                itemBuilder: (context, index) {
+                  final toolId = historyIds[index];
+                  final tool = ToolCategories.getToolById(toolId);
+                  return ToolCard(tool: tool);
+                },
               ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: historyIds.length,
-              itemBuilder: (context, index) {
-                final toolId = historyIds[index];
-                final tool = ToolCategories.getToolById(toolId);
-                return ToolCard(tool: tool);
-              },
-            ),
+      ),
     );
   }
 }

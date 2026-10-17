@@ -19,8 +19,7 @@ class FileSaveService {
         return imageFile.path;
       }
 
-      final Directory? appDir = await getApplicationDocumentsDirectory();
-      if (appDir == null) return null;
+      final Directory appDir = await getApplicationDocumentsDirectory();
 
       final String fileName = '${prefix}_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final String targetPath = '${appDir.path}/$fileName';

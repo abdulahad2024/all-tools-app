@@ -200,17 +200,20 @@ class ToolScreenDispatcher {
       case 'url_qr':
       case 'text_qr':
       case 'payment_qr':
-      case 'barcode_generator':
       case 'qr_exporter':
       case 'vcard_qr':
         screen = const QrGeneratorScreen();
         break;
 
       case 'qr_scanner':
-      case 'barcode_scanner':
-      case 'product_barcode':
       case 'qr_history':
         screen = const QrScannerScreen();
+        break;
+
+      case 'barcode_generator':
+      case 'barcode_scanner':
+      case 'product_barcode':
+        screen = const BarcodeGeneratorScreen();
         break;
 
       // 5. Developer Tools
@@ -234,21 +237,27 @@ class ToolScreenDispatcher {
 
       case 'base64_tool':
       case 'url_encoder':
-      case 'jwt_decoder':
       case 'hash_generator':
       case 'uuid_generator':
-      case 'regex_tester':
-      case 'timestamp_converter':
       case 'color_code_converter':
       case 'css_gradient_generator':
       case 'box_shadow_generator':
       case 'lorem_generator':
-      case 'markdown_previewer':
+        screen = const HashUuidGeneratorScreen();
+        break;
+
+      case 'jwt_decoder':
+      case 'timestamp_converter':
       case 'cron_helper':
-      case 'http_status_codes':
-      case 'api_tester':
+        screen = const JwtTimestampDecoderScreen();
+        break;
+
       case 'git_cheat_sheet':
-        screen = const HashGeneratorScreen();
+      case 'http_status_codes':
+      case 'regex_tester':
+      case 'api_tester':
+      case 'markdown_previewer':
+        screen = const DevCheatsheetsScreen();
         break;
 
       // 6. Internet & Network

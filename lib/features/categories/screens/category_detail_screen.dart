@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/tool_categories.dart';
 import '../../../core/localization/localization_provider.dart';
 import '../../../core/models/category_model.dart';
+import '../../common/widgets/responsive_container.dart';
 import '../../common/widgets/tool_card.dart';
 
 class CategoryDetailScreen extends ConsumerStatefulWidget {
@@ -34,61 +35,64 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
       appBar: AppBar(
         title: Text(widget.category.getName(lang)),
       ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            color: widget.category.color.withOpacity(0.12),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: widget.category.color,
-                  radius: 24,
-                  child: Icon(widget.category.icon, color: Colors.white, size: 28),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.category.getName(lang),
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        widget.category.getDescription(lang),
-                        style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                      ),
-                    ],
+      body: ResponsiveContainer(
+        maxWidth: 900,
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              color: widget.category.color.withOpacity(0.12),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: widget.category.color,
+                    radius: 24,
+                    child: Icon(widget.category.icon, color: Colors.white, size: 28),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search in ${widget.category.getName(lang)}...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.category.getName(lang),
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          widget.category.getDescription(lang),
+                          style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              onChanged: (val) => setState(() => _searchQuery = val),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: filteredTools.length,
-              itemBuilder: (context, index) {
-                return ToolCard(tool: filteredTools[index]);
-              },
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search in ${widget.category.getName(lang)}...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onChanged: (val) => setState(() => _searchQuery = val),
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: filteredTools.length,
+                itemBuilder: (context, index) {
+                  return ToolCard(tool: filteredTools[index]);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
