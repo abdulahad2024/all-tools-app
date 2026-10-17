@@ -284,12 +284,35 @@ class ToolScreenDispatcher {
         break;
 
       // 7. Student & Education
+      case 'question_paper_generator':
+        screen = const QuestionPaperGeneratorScreen();
+        break;
+
+      case 'certificate_maker':
+        screen = const CertificateMakerScreen();
+        break;
+
+      case 'notice_circular_generator':
+        screen = const NoticeCircularGeneratorScreen();
+        break;
+
+      case 'class_routine':
+        screen = const ClassRoutineMakerScreen();
+        break;
+
+      case 'student_id_card_maker':
+        screen = const StudentIdCardMakerScreen();
+        break;
+
+      case 'leave_application_generator':
+        screen = const LeaveApplicationGeneratorScreen();
+        break;
+
       case 'student_gpa':
       case 'student_cgpa':
       case 'attendance_calc':
       case 'study_timetable':
       case 'exam_countdown':
-      case 'class_routine':
       case 'assignment_tracker':
         screen = const StudentGpaScreen();
         break;
